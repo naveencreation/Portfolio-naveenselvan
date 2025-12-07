@@ -1,43 +1,29 @@
 import { useEffect, useState } from 'react';
-import { Navbar } from '@/components/Navbar';
-import { Footer } from '@/components/Footer';
-import { Hero } from '@/pages/Hero';
-import { About } from '@/pages/About';
-import { Experience } from '@/pages/Experience';
-import { Projects } from '@/pages/Projects';
-import { Skills } from '@/pages/Skills';
-import { Contact } from '@/pages/Contact';
 import { fetchPortfolio } from '@/lib/api';
 import type { Portfolio } from '@/types/portfolio';
-import { Loader2 } from 'lucide-react';
+import { NarrativeJourney } from '@/components/narrative';
 
 function App() {
-  const [portfolio, setPortfolio] = useState<Portfolio | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [data, setData] = useState<Portfolio | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
-    const loadPortfolio = async () => {
-      try {
-        const data = await fetchPortfolio();
-        setPortfolio(data);
-      } catch (err) {
-        setError('Failed to load portfolio data. Please try again later.');
-        console.error(err);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    loadPortfolio();
+    fetchPortfolio()
+      .then(setData)
+      .catch(() => setError(true))
+      .finally(() => setLoading(false));
   }, []);
 
-  if (isLoading) {
+  if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-background">
-        <div className="flex flex-col items-center gap-4">
-          <Loader2 className="w-12 h-12 text-primary animate-spin" />
-          <p className="text-muted-foreground">Loading portfolio...</p>
+      <div className="min-h-screen bg-[var(--color-background)] flex items-center justify-center">
+        <div className="relative">
+          {/* Animated loading indicator */}
+          <div className="w-16 h-16 rounded-full border-2 border-[var(--accent-current)]/20 border-t-[var(--accent-current)] animate-spin" />
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="w-8 h-8 rounded-full border-2 border-[var(--accent-current)]/10 border-b-[var(--accent-current)]/50 animate-spin" style={{ animationDirection: 'reverse', animationDuration: '0.8s' }} />
+          </div>
         </div>
       </div>
     );
@@ -45,30 +31,27 @@ function App() {
 
   if (error) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-background">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold text-red-500 mb-2">Error</h1>
-          <p className="text-muted-foreground">{error}</p>
-        </div>
+      <div className="min-h-screen bg-[var(--color-background)] flex flex-col items-center justify-center text-center p-8">
+        <div className="text-6xl mb-6">⚠️</div>
+        <h1 className="text-narrative-statement text-[var(--text-primary)] mb-4">
+          Something went wrong
+        </h1>
+        <p className="text-narrative-body text-[var(--text-secondary)] max-w-md">
+          Failed to load portfolio data. Please refresh the page or try again later.
+        </p>
+        <button
+          onClick={() => window.location.reload()}
+          className="magnetic-cta mt-8"
+        >
+          Try Again
+        </button>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      <Navbar />
-      <main>
-        <Hero profile={portfolio?.profile || null} />
-        <About profile={portfolio?.profile || null} education={portfolio?.education || []} />
-        <Experience experiences={portfolio?.experiences || []} />
-        <Projects projects={portfolio?.projects || []} />
-        <Skills
-          skillCategories={portfolio?.skill_categories || []}
-          certifications={portfolio?.certifications || []}
-        />
-        <Contact profile={portfolio?.profile || null} />
-      </main>
-      <Footer />
+    <div className="min-h-screen bg-[var(--color-background)] text-[var(--color-foreground)]">
+      <NarrativeJourney data={data} />
     </div>
   );
 }
