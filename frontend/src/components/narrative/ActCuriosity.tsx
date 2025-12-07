@@ -192,8 +192,7 @@ export function ActCuriosity() {
     return (
         <section
             ref={actRef}
-            className="act-curiosity act-container relative overflow-hidden"
-            style={{ minHeight: '150vh' }}
+            className="act-curiosity act-container act-container-hero relative overflow-hidden"
         >
             {/* Background gradient */}
             <div className="absolute inset-0 bg-gradient-radial from-[var(--accent-current)]/5 via-transparent to-transparent opacity-50" />

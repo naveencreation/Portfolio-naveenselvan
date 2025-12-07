@@ -54,7 +54,7 @@ function ProjectStory({
     return (
         <div
             ref={projectRef}
-            className="project-story mb-32 last:mb-0"
+            className="project-story mb-16 last:mb-0"
         >
             {/* Project Number */}
             <motion.div
@@ -192,11 +192,10 @@ export function ActProjects({ projects }: ActProjectsProps) {
         <section
             ref={actRef}
             className="act-projects act-container relative"
-            style={{ minHeight: displayProjects.length > 2 ? '300vh' : '200vh' }}
         >
             <div className="act-content">
                 {/* Act header */}
-                <div className="narrative-center mb-24">
+                <div className="narrative-center mb-12">
                     <motion.p
                         className="text-narrative-whisper mb-6 tracking-widest uppercase"
                         initial={{ opacity: 0 }}

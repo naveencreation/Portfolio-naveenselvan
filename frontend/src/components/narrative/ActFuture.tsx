@@ -19,7 +19,6 @@ export function ActFuture({ email }: ActFutureProps) {
         <section
             ref={actRef}
             className="act-future act-container relative"
-            style={{ minHeight: '100vh' }}
         >
             {/* Expansive background gradient */}
             <div className="absolute inset-0 pointer-events-none">
@@ -46,7 +45,7 @@ export function ActFuture({ email }: ActFutureProps) {
                 </motion.p>
 
                 <motion.h2
-                    className="text-narrative-hero mb-12"
+                    className="text-narrative-hero mb-8"
                     initial={{ opacity: 0, y: 40 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
@@ -58,7 +57,7 @@ export function ActFuture({ email }: ActFutureProps) {
 
                 {/* The invitation */}
                 <motion.p
-                    className="text-narrative-statement text-[var(--text-secondary)] max-w-xl mb-16"
+                    className="text-narrative-statement text-[var(--text-secondary)] max-w-xl mb-10"
                     initial={{ opacity: 0 }}
                     whileInView={{ opacity: 1 }}
                     transition={{ duration: 1.5, delay: 0.3 }}
@@ -122,7 +121,7 @@ export function ActFuture({ email }: ActFutureProps) {
 
                 {/* Footer note */}
                 <motion.p
-                    className="text-narrative-whisper text-[var(--text-muted)] mt-24"
+                    className="text-narrative-whisper text-[var(--text-muted)] mt-12"
                     initial={{ opacity: 0 }}
                     whileInView={{ opacity: 1 }}
                     transition={{ duration: 1.5, delay: 1 }}

@@ -13,7 +13,6 @@ export function ActHuman({ profile }: ActHumanProps) {
         <section
             ref={actRef}
             className="act-human act-container relative"
-            style={{ minHeight: '100vh' }}
         >
             {/* Subtle background breathing effect */}
             <div className="absolute inset-0 pointer-events-none">
@@ -48,7 +47,7 @@ export function ActHuman({ profile }: ActHumanProps) {
 
                 {/* Portrait placeholder */}
                 <motion.div
-                    className="relative mb-12"
+                    className="relative mb-8"
                     initial={{ opacity: 0, scale: 0.9 }}
                     whileInView={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
@@ -117,7 +116,7 @@ export function ActHuman({ profile }: ActHumanProps) {
                 {/* Subtle tagline if available */}
                 {profile?.tagline && (
                     <motion.p
-                        className="text-narrative-whisper text-[var(--text-muted)] mt-12 max-w-md"
+                        className="text-narrative-whisper text-[var(--text-muted)] mt-8 max-w-md"
                         initial={{ opacity: 0 }}
                         whileInView={{ opacity: 1 }}
                         transition={{ duration: 1.5, delay: 0.8 }}

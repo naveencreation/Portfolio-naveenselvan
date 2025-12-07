@@ -215,7 +215,6 @@ export function ActThinking() {
         <section
             ref={actRef}
             className="act-thinking act-container relative"
-            style={{ minHeight: '150vh' }}
         >
             <div className="act-content">
                 {/* Act header */}
@@ -266,8 +265,8 @@ export function ActThinking() {
                                 key={tradeoff.id}
                                 onClick={() => setCurrentTradeoff(index)}
                                 className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${currentTradeoff === index
-                                        ? 'bg-[var(--accent-current)] text-[var(--color-background)]'
-                                        : 'bg-[var(--color-surface)] text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
+                                    ? 'bg-[var(--accent-current)] text-[var(--color-background)]'
+                                    : 'bg-[var(--color-surface)] text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
                                     }`}
                             >
                                 {tradeoff.left.icon} / {tradeoff.right.icon}
@@ -308,7 +307,7 @@ export function ActThinking() {
 
                 {/* Closing thought */}
                 <motion.div
-                    className="narrative-center mt-24"
+                    className="narrative-center mt-12"
                     initial={{ opacity: 0 }}
                     whileInView={{ opacity: 1 }}
                     transition={{ duration: 1 }}
