@@ -65,6 +65,8 @@ def get_portfolio(db: Session = Depends(get_db)):
     )
 
 
+# TODO: Possibly unused – frontend only calls /api/portfolio which returns all data
+# Consider removing individual endpoints if not used by other clients
 @app.get("/api/profile", response_model=ProfileResponse)
 def get_profile(db: Session = Depends(get_db)):
     profile = db.query(Profile).first()
