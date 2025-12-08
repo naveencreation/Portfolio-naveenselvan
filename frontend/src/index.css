@@ -1,4 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url('https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -58,7 +59,7 @@
   }
 
   body {
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-family: 'Outfit', system-ui, -apple-system, sans-serif;
     background-color: var(--color-background);
     color: var(--color-foreground);
     line-height: 1.6;
@@ -92,33 +93,34 @@
 
 @layer utilities {
   .font-display {
-    font-family: 'Space Grotesk', system-ui, sans-serif;
+    font-family: 'Clash Display', system-ui, sans-serif;
     letter-spacing: -0.02em;
+    font-weight: 600;
   }
 
   .font-mono {
     font-family: 'JetBrains Mono', 'Fira Code', monospace;
   }
 
-  /* Narrative Text Styles */
+  /* Narrative Text Styles - Bold & Confident */
   .text-narrative-hero {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: clamp(2.5rem, 8vw, 6rem);
+    font-family: 'Clash Display', sans-serif;
+    font-size: clamp(3rem, 10vw, 8rem);
     font-weight: 600;
-    line-height: 1.1;
+    line-height: 1.0;
     letter-spacing: -0.03em;
   }
 
   .text-narrative-statement {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: clamp(1.5rem, 4vw, 3rem);
+    font-family: 'Clash Display', sans-serif;
+    font-size: clamp(1.75rem, 5vw, 3.5rem);
     font-weight: 500;
-    line-height: 1.3;
-    letter-spacing: -0.02em;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
   }
 
   .text-narrative-body {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Outfit', sans-serif;
     font-size: clamp(1rem, 2vw, 1.25rem);
     font-weight: 400;
     line-height: 1.7;

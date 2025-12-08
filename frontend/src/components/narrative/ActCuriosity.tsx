@@ -213,25 +213,71 @@ export function ActCuriosity() {
 
             {/* Main narrative text */}
             <div className="act-content narrative-center relative z-20">
-                <div ref={textRef} className="max-w-3xl">
+                <div ref={textRef} className="max-w-4xl">
                     <motion.p
-                        className="text-narrative-whisper mb-6 tracking-widest uppercase"
-                        initial={{ opacity: 0 }}
-                        whileInView={{ opacity: 1 }}
-                        transition={{ duration: 1, delay: 0.5 }}
+                        className="text-[10px] tracking-[0.5em] uppercase text-[#505060] mb-12"
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 1, delay: 0.3 }}
                     >
                         Act I
                     </motion.p>
 
-                    <h1 className="text-narrative-hero text-gradient-flow animate-gradient-flow mb-8">
-                        Curiosity
-                    </h1>
+                    {/* DRAMATIC CURIOSITY TITLE */}
+                    <div className="relative mb-12">
+                        {/* Main title with character reveal */}
+                        <h1 className="relative">
+                            {'Curiosity'.split('').map((char, i) => (
+                                <motion.span
+                                    key={i}
+                                    className="inline-block font-display"
+                                    style={{
+                                        fontSize: 'clamp(4rem, 15vw, 12rem)',
+                                        fontWeight: 600,
+                                        lineHeight: 0.9,
+                                        letterSpacing: '-0.04em',
+                                        color: i === 0 ? '#f59e0b' : 'transparent',
+                                        backgroundImage: i === 0
+                                            ? 'none'
+                                            : 'linear-gradient(135deg, #f59e0b 0%, #8b5cf6 50%, #14b8a6 100%)',
+                                        backgroundClip: 'text',
+                                        WebkitBackgroundClip: 'text',
+                                        textShadow: i === 0 ? '0 0 60px rgba(245, 158, 11, 0.4)' : 'none',
+                                    }}
+                                    initial={{ opacity: 0, y: 50, rotateX: -90 }}
+                                    whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
+                                    transition={{
+                                        duration: 0.8,
+                                        delay: 0.5 + i * 0.08,
+                                        ease: [0.16, 1, 0.3, 1],
+                                    }}
+                                >
+                                    {char}
+                                </motion.span>
+                            ))}
+                        </h1>
 
-                    <p className="text-narrative-statement text-[var(--text-secondary)] leading-relaxed">
-                        I started by asking
-                        <br />
-                        <span className="text-[var(--text-primary)]">how things work.</span>
-                    </p>
+                        {/* Subtle accent line under title */}
+                        <motion.div
+                            className="absolute -bottom-4 left-0 h-px"
+                            style={{
+                                background: 'linear-gradient(90deg, #f59e0b, #8b5cf6, transparent)',
+                            }}
+                            initial={{ width: 0 }}
+                            whileInView={{ width: '60%' }}
+                            transition={{ duration: 1.5, delay: 1.2, ease: [0.16, 1, 0.3, 1] }}
+                        />
+                    </div>
+
+                    <motion.p
+                        className="text-2xl md:text-3xl font-display font-light text-[#a0a0b0] leading-relaxed"
+                        initial={{ opacity: 0, y: 30 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 1, delay: 1.5 }}
+                    >
+                        I started by asking<br />
+                        <span className="text-white font-medium">how things work.</span>
+                    </motion.p>
                 </div>
             </div>
 
@@ -307,6 +353,6 @@ export function ActCuriosity() {
                     </motion.svg>
                 </motion.div>
             </motion.div>
-        </section>
+        </section >
     );
 }
