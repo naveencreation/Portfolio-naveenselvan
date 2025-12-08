@@ -235,26 +235,76 @@ export function ActCuriosity() {
                 </div>
             </div>
 
-            {/* Scroll indicator */}
+            {/* Cinematic Pulse Indicator - Heartbeat rings + floating chevron */}
             <motion.div
-                className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 1, delay: 2 }}
+                className="absolute bottom-20 left-1/2 -translate-x-1/2 w-16 h-16 flex items-center justify-center"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 2, delay: 1.5 }}
             >
-                <span className="text-narrative-whisper text-xs tracking-widest uppercase">
-                    Scroll to explore
-                </span>
-                <motion.div
-                    className="w-5 h-8 rounded-full border border-[var(--accent-current)]/50 flex items-start justify-center p-1"
-                    animate={{ borderColor: ['rgba(100,116,139,0.5)', 'rgba(139,92,246,0.5)', 'rgba(100,116,139,0.5)'] }}
-                    transition={{ duration: 3, repeat: Infinity }}
-                >
+                {/* Expanding pulse rings - like heartbeat/sonar */}
+                {[0, 1, 2].map((i) => (
                     <motion.div
-                        className="w-1 h-2 rounded-full bg-[var(--accent-current)]"
-                        animate={{ y: [0, 12, 0] }}
-                        transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
+                        key={i}
+                        className="absolute rounded-full border"
+                        style={{
+                            width: 64,
+                            height: 64,
+                            borderColor: 'rgba(139, 92, 246, 0.4)',
+                        }}
+                        animate={{
+                            scale: [1, 2.5, 3],
+                            opacity: [0.6, 0.2, 0],
+                        }}
+                        transition={{
+                            duration: 3,
+                            repeat: Infinity,
+                            delay: i * 1,
+                            ease: 'easeOut',
+                        }}
                     />
+                ))}
+
+                {/* Central glowing orb with chevron */}
+                <motion.div
+                    className="relative flex items-center justify-center"
+                    animate={{ y: [0, -8, 0] }}
+                    transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
+                >
+                    {/* Glow backdrop */}
+                    <div
+                        className="absolute w-14 h-14 rounded-full"
+                        style={{
+                            background: 'radial-gradient(circle, rgba(139,92,246,0.15) 0%, transparent 70%)',
+                            filter: 'blur(8px)',
+                        }}
+                    />
+
+                    {/* Chevron */}
+                    <motion.svg
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        className="relative z-10"
+                        animate={{
+                            opacity: [0.5, 1, 0.5],
+                            filter: [
+                                'drop-shadow(0 0 4px rgba(139,92,246,0.4))',
+                                'drop-shadow(0 0 12px rgba(139,92,246,0.8))',
+                                'drop-shadow(0 0 4px rgba(139,92,246,0.4))'
+                            ]
+                        }}
+                        transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+                    >
+                        <path
+                            d="M6 9l6 6 6-6"
+                            stroke="rgba(139, 92, 246, 0.9)"
+                            strokeWidth="1.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                        />
+                    </motion.svg>
                 </motion.div>
             </motion.div>
         </section>
