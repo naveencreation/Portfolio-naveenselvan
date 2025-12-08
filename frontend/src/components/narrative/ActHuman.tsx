@@ -42,7 +42,7 @@ export function ActHuman({ profile }: ActHumanProps) {
                         alt=""
                         className="absolute top-1/2 left-0 -translate-y-1/2 h-[110%] w-auto max-w-none object-cover object-top"
                         style={{
-                            filter: 'contrast(1.08) brightness(0.7) saturate(0.8)',
+                            filter: 'contrast(1.08) brightness(0.85) saturate(0.85)',
                             /* Single asymmetric radial mask - offset right so left edge fades more */
                             maskImage: `
                                 radial-gradient(
@@ -123,6 +123,7 @@ export function ActHuman({ profile }: ActHumanProps) {
                     style={{ color: 'rgba(160,150,180,0.4)' }}
                     initial={{ opacity: 0 }}
                     whileInView={{ opacity: 1 }}
+                    viewport={{ once: true }}
                     transition={{ duration: 1.5 }}
                 >
                     Act V
@@ -138,6 +139,7 @@ export function ActHuman({ profile }: ActHumanProps) {
                     }}
                     initial={{ opacity: 0, y: 50 }}
                     whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
                     transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1] }}
                 >
                     {profile?.name || 'Naveen'}
@@ -149,6 +151,7 @@ export function ActHuman({ profile }: ActHumanProps) {
                     style={{ color: 'rgba(180,175,195,0.7)' }}
                     initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
                     transition={{ duration: 1.2, delay: 0.15 }}
                 >
                     {profile?.title || 'Engineer & Creator'}
@@ -160,6 +163,7 @@ export function ActHuman({ profile }: ActHumanProps) {
                     style={{ color: 'rgba(130,125,150,0.6)' }}
                     initial={{ opacity: 0 }}
                     whileInView={{ opacity: 1 }}
+                    viewport={{ once: true }}
                     transition={{ duration: 1.5, delay: 0.3 }}
                 >
                     Still learning<span className="mx-2 opacity-40">·</span>Still building
@@ -172,6 +176,7 @@ export function ActHuman({ profile }: ActHumanProps) {
                         style={{ color: 'rgba(100,95,120,0.5)' }}
                         initial={{ opacity: 0 }}
                         whileInView={{ opacity: 1 }}
+                        viewport={{ once: true }}
                         transition={{ duration: 1.5, delay: 0.45 }}
                     >
                         {profile.tagline}

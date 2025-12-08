@@ -218,6 +218,7 @@ export function ActCuriosity() {
                         className="text-[10px] tracking-[0.5em] uppercase text-[#505060] mb-12"
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
                         transition={{ duration: 1, delay: 0.3 }}
                     >
                         Act I
@@ -246,6 +247,7 @@ export function ActCuriosity() {
                                     }}
                                     initial={{ opacity: 0, y: 50, rotateX: -90 }}
                                     whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
+                                    viewport={{ once: true }}
                                     transition={{
                                         duration: 0.8,
                                         delay: 0.5 + i * 0.08,
@@ -265,6 +267,7 @@ export function ActCuriosity() {
                             }}
                             initial={{ width: 0 }}
                             whileInView={{ width: '60%' }}
+                            viewport={{ once: true }}
                             transition={{ duration: 1.5, delay: 1.2, ease: [0.16, 1, 0.3, 1] }}
                         />
                     </div>
@@ -273,6 +276,7 @@ export function ActCuriosity() {
                         className="text-2xl md:text-3xl font-display font-light text-[#a0a0b0] leading-relaxed"
                         initial={{ opacity: 0, y: 30 }}
                         whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
                         transition={{ duration: 1, delay: 1.5 }}
                     >
                         I started by asking<br />

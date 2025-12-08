@@ -14,6 +14,18 @@ import { ScrollProgress } from './ScrollProgress';
 
 gsap.registerPlugin(ScrollTrigger);
 
+// Performance optimizations for GSAP
+gsap.config({
+    force3D: true,
+    nullTargetWarn: false,
+});
+
+// Reduce ScrollTrigger refresh rate for better performance
+ScrollTrigger.config({
+    limitCallbacks: true,
+    ignoreMobileResize: true,
+});
+
 // Accent color context for scroll-driven color evolution
 interface AccentContextType {
     accentColor: string;
