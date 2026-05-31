@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { Project } from '@/types/portfolio';
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
 let refreshTimeout: number | undefined;
 const debouncedScrollTriggerRefresh = () => {
@@ -35,6 +36,8 @@ function ProjectCard({
     const cardRef = useRef<HTMLDivElement>(null);
     const isInitialMount = useRef(true);
     const technologies = project.technologies?.split(',').map(t => t.trim()) || [];
+    const [isTransitioning, setIsTransitioning] = useState(false);
+    const prevExpanded = useRef(isExpanded);
 
     let highlights: string[] = [];
     if (project.highlights) {
@@ -57,17 +60,34 @@ function ProjectCard({
     };
 
     useEffect(() => {
+        if (prevExpanded.current !== isExpanded) {
+            setIsTransitioning(true);
+            prevExpanded.current = isExpanded;
+            
+            // Safety timeout to ensure content is never stuck invisible
+            const safetyTimer = setTimeout(() => {
+                setIsTransitioning(false);
+            }, 800);
+            return () => clearTimeout(safetyTimer);
+        }
+    }, [isExpanded]);
+
+    useEffect(() => {
         if (isExpanded) {
             if (isInitialMount.current) {
                 isInitialMount.current = false;
                 return;
             }
             const timer = setTimeout(() => {
-                cardRef.current?.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start',
-                });
-            }, 100);
+                if (cardRef.current) {
+                    gsap.to(window, {
+                        duration: 0.6,
+                        scrollTo: { y: cardRef.current, offsetY: 80 },
+                        ease: 'power2.out',
+                        overwrite: 'auto'
+                    });
+                }
+            }, 150);
             return () => clearTimeout(timer);
         } else {
             isInitialMount.current = false;
@@ -89,11 +109,14 @@ function ProjectCard({
                 default: { duration: 0.5, ease: [0.25, 1, 0.5, 1] }
             }}
             whileHover={!isExpanded ? { y: -6, transition: { duration: 0.2 } } : undefined}
-            onLayoutAnimationComplete={debouncedScrollTriggerRefresh}
+            onLayoutAnimationComplete={() => {
+                setIsTransitioning(false);
+                debouncedScrollTriggerRefresh();
+            }}
             className={`group relative flex flex-col justify-between rounded-2xl glass-subtle transition-[border-color,background-color,box-shadow,opacity] duration-300 overflow-hidden ${
                 isExpanded 
-                    ? 'md:col-span-2 p-8 md:p-10 border-[var(--accent-current)]/30 bg-white/[0.02] shadow-2xl shadow-[var(--accent-current)]/[0.02]' 
-                    : 'p-8 md:p-10 hover:border-[var(--accent-current)]/20 cursor-pointer min-h-[300px]'
+                    ? 'md:col-span-2 p-5 md:p-8 lg:p-10 border-[var(--accent-current)]/30 bg-white/[0.02] shadow-2xl shadow-[var(--accent-current)]/[0.02]' 
+                    : 'p-5 md:p-8 lg:p-10 hover:border-[var(--accent-current)]/20 cursor-pointer min-h-[220px] md:min-h-[300px]'
             }`}
         >
             {/* Hover Glow Effect */}
@@ -101,27 +124,29 @@ function ProjectCard({
                 <div className="absolute inset-0 bg-gradient-to-br from-[var(--accent-current)]/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
             )}
 
-            <div className="relative z-10 flex flex-col h-full">
+            {/* Absolute Watermark Number */}
+            <div className="absolute right-4 bottom-2 text-[7rem] md:text-[10rem] font-display font-bold text-[var(--accent-current)]/[0.03] pointer-events-none select-none z-0 transition-all duration-500 group-hover:text-[var(--accent-current)]/[0.06] leading-none">
+                {number}
+            </div>
+
+            <motion.div 
+                animate={{ opacity: isTransitioning ? 0 : 1 }}
+                transition={{ duration: isTransitioning ? 0.1 : 0.25 }}
+                className={`relative z-10 flex flex-col h-full w-full ${isTransitioning ? 'pointer-events-none' : ''}`}
+            >
                 {/* Header */}
                 <div className="flex items-start justify-between gap-4 mb-6">
-                    <div className="flex items-center gap-4 md:gap-6 flex-grow">
-                        <span className={`font-display font-bold text-[var(--accent-current)]/10 transition-all duration-300 leading-none ${
-                            isExpanded ? 'text-7xl md:text-8xl' : 'text-5xl md:text-6xl'
+                    <div className="flex-grow">
+                        <h4 className={`font-display font-medium text-[var(--text-primary)] transition-all duration-300 ${
+                            isExpanded ? 'text-2xl md:text-3xl text-[var(--accent-current)]' : 'text-xl group-hover:text-[var(--accent-current)] line-clamp-2'
                         }`}>
-                            {number}
-                        </span>
-                        <div>
-                            <h4 className={`font-display font-medium text-[var(--text-primary)] transition-all duration-300 ${
-                                isExpanded ? 'text-2xl md:text-3xl text-[var(--accent-current)]' : 'text-xl group-hover:text-[var(--accent-current)] line-clamp-2'
-                            }`}>
-                                {project.title}
-                            </h4>
-                            {project.role && (
-                                <p className="text-xs text-[var(--accent-current)] font-medium mt-1 uppercase tracking-wider font-mono">
-                                    {project.role}
-                                </p>
-                            )}
-                        </div>
+                            {project.title}
+                        </h4>
+                        {project.role && (
+                            <p className="text-xs text-[var(--accent-current)] font-medium mt-1 uppercase tracking-wider font-mono">
+                                {project.role}
+                            </p>
+                        )}
                     </div>
                     {/* Toggle indicator / Close button */}
                     <button 
@@ -129,7 +154,7 @@ function ProjectCard({
                             e.stopPropagation();
                             onToggle();
                         }}
-                        className="flex-shrink-0 mt-2 text-[var(--text-muted)] hover:text-[var(--accent-current)] transition-colors p-1.5 rounded-full bg-white/5 border border-white/10 hover:border-[var(--accent-current)]/30 hover:bg-white/10"
+                        className="flex-shrink-0 mt-1 text-[var(--text-muted)] hover:text-[var(--accent-current)] transition-colors p-1.5 rounded-full bg-white/5 border border-white/10 hover:border-[var(--accent-current)]/30 hover:bg-white/10"
                         aria-label={isExpanded ? "Collapse project details" : "Expand project details"}
                     >
                         {isExpanded ? (
@@ -158,29 +183,29 @@ function ProjectCard({
                                 {/* Left: The Story */}
                                  <div className="space-y-6">
                                     <div>
-                                        <p className="text-sm md:text-base uppercase tracking-wider text-[var(--accent-amber)] mb-2 font-mono font-bold">
+                                        <p className="text-base md:text-lg uppercase tracking-wider text-[var(--accent-amber)] mb-2 font-mono font-bold">
                                             The Problem
                                         </p>
-                                        <p className="text-base md:text-lg text-[var(--text-secondary)] leading-relaxed">
+                                        <p className="text-[1.05rem] md:text-xl text-[var(--text-secondary)] leading-relaxed font-light">
                                             {project.description}
                                         </p>
                                     </div>
                                     {highlights[0] && (
                                         <div>
-                                            <p className="text-sm md:text-base uppercase tracking-wider text-[var(--accent-violet)] mb-2 font-mono font-bold">
+                                            <p className="text-base md:text-lg uppercase tracking-wider text-[var(--accent-violet)] mb-2 font-mono font-bold">
                                                 The Thinking
                                             </p>
-                                            <p className="text-base md:text-lg text-[var(--text-secondary)] leading-relaxed">
+                                            <p className="text-[1.05rem] md:text-xl text-[var(--text-secondary)] leading-relaxed font-light">
                                                 {highlights[0]}
                                             </p>
                                         </div>
                                     )}
                                     {(highlights[1] || highlights[0]) && (
                                         <div>
-                                            <p className="text-sm md:text-base uppercase tracking-wider text-[var(--accent-teal)] mb-2 font-mono font-bold">
+                                            <p className="text-base md:text-lg uppercase tracking-wider text-[var(--accent-teal)] mb-2 font-mono font-bold">
                                                 The Solution
                                             </p>
-                                            <p className="text-base md:text-lg text-[var(--text-secondary)] leading-relaxed">
+                                            <p className="text-[1.05rem] md:text-xl text-[var(--text-secondary)] leading-relaxed font-light">
                                                 {highlights[1] || highlights[0]}
                                             </p>
                                         </div>
@@ -206,14 +231,14 @@ function ProjectCard({
                                     </div>
 
                                     {/* Action Buttons */}
-                                    <div className="pt-6 border-t border-white/5 flex flex-wrap gap-4 mt-auto">
+                                    <div className="pt-6 border-t border-white/5 grid grid-cols-1 sm:flex sm:flex-wrap gap-3 mt-auto">
                                         {project.github && (
                                             <a
                                                 href={project.github}
                                                 target="_blank"
                                                 rel="noopener noreferrer"
                                                 onClick={(e) => e.stopPropagation()}
-                                                className="inline-flex items-center gap-2 px-4 py-2.5 text-sm font-medium rounded-lg bg-white/5 border border-white/10 hover:bg-white/10 hover:border-[var(--accent-current)]/30 transition-all duration-300 text-[var(--text-primary)]"
+                                                className="inline-flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium rounded-lg bg-white/5 border border-white/10 hover:bg-white/10 hover:border-[var(--accent-current)]/30 transition-all duration-300 text-[var(--text-primary)] w-full sm:w-auto"
                                             >
                                                 <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
                                                     <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
@@ -227,7 +252,7 @@ function ProjectCard({
                                                 target="_blank"
                                                 rel="noopener noreferrer"
                                                 onClick={(e) => e.stopPropagation()}
-                                                className="inline-flex items-center gap-2 px-4 py-2.5 text-sm font-medium rounded-lg bg-[var(--accent-current)]/10 border border-[var(--accent-current)]/30 hover:bg-[var(--accent-current)]/20 transition-all duration-300 text-[var(--accent-current)]"
+                                                className="inline-flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium rounded-lg bg-[var(--accent-current)]/10 border border-[var(--accent-current)]/30 hover:bg-[var(--accent-current)]/20 transition-all duration-300 text-[var(--accent-current)] w-full sm:w-auto"
                                             >
                                                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
@@ -306,7 +331,7 @@ function ProjectCard({
                         )}
                     </AnimatePresence>
                 </div>
-            </div>
+            </motion.div>
         </motion.div>
     );
 }

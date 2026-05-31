@@ -85,6 +85,9 @@ export function NarrativeJourney({ data }: NarrativeJourneyProps) {
     useEffect(() => {
         if (!containerRef.current) return;
 
+        let lastAccent = '';
+        let ticking = false;
+
         // Main scroll progress tracker
         ScrollTrigger.create({
             trigger: containerRef.current,
@@ -92,17 +95,26 @@ export function NarrativeJourney({ data }: NarrativeJourneyProps) {
             end: 'bottom bottom',
             onUpdate: (self) => {
                 const progress = self.progress;
-                setScrollProgress(progress);
+                if (!ticking) {
+                    requestAnimationFrame(() => {
+                        setScrollProgress(progress);
 
-                const newAccent = getAccentForProgress(progress);
-                setAccentColor(newAccent);
+                        const newAccent = getAccentForProgress(progress);
+                        if (newAccent !== lastAccent) {
+                            lastAccent = newAccent;
+                            setAccentColor(newAccent);
 
-                // Update CSS custom property for global accent
-                document.documentElement.style.setProperty('--accent-current', newAccent);
-                document.documentElement.style.setProperty(
-                    '--accent-current-dim',
-                    `${newAccent}33`
-                );
+                            // Update CSS custom property for global accent
+                            document.documentElement.style.setProperty('--accent-current', newAccent);
+                            document.documentElement.style.setProperty(
+                                '--accent-current-dim',
+                                `${newAccent}33`
+                            );
+                        }
+                        ticking = false;
+                    });
+                    ticking = true;
+                }
             },
         });
 
