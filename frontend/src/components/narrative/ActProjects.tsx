@@ -65,10 +65,10 @@ function ProjectCard({
                 }
                 ScrollTrigger.refresh();
             }}
-            className={`group relative flex flex-col justify-between p-6 md:p-8 rounded-2xl glass-subtle transition-all duration-500 overflow-hidden ${
+            className={`group relative flex flex-col justify-between rounded-2xl glass-subtle transition-all duration-500 overflow-hidden ${
                 isExpanded 
-                    ? 'md:col-span-2 border-[var(--accent-current)]/30 bg-white/[0.02] shadow-2xl shadow-[var(--accent-current)]/[0.02]' 
-                    : 'hover:border-[var(--accent-current)]/20 cursor-pointer'
+                    ? 'md:col-span-2 p-8 md:p-10 border-[var(--accent-current)]/30 bg-white/[0.02] shadow-2xl shadow-[var(--accent-current)]/[0.02]' 
+                    : 'p-7 md:p-9 hover:border-[var(--accent-current)]/20 cursor-pointer min-h-[300px]'
             }`}
         >
             {/* Hover Glow Effect */}
@@ -130,31 +130,31 @@ function ProjectCard({
                             className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-6 pt-6 border-t border-[var(--accent-current)]/10"
                         >
                             {/* Left: The Story */}
-                            <div className="space-y-6">
+                             <div className="space-y-6">
                                 <div>
-                                    <p className="text-xs uppercase tracking-widest text-[var(--accent-amber)] mb-2 font-mono font-semibold">
+                                    <p className="text-sm md:text-base uppercase tracking-wider text-[var(--accent-amber)] mb-2 font-mono font-bold">
                                         The Problem
                                     </p>
-                                    <p className="text-sm md:text-base text-[var(--text-secondary)] leading-relaxed">
+                                    <p className="text-base md:text-lg text-[var(--text-secondary)] leading-relaxed">
                                         {project.description}
                                     </p>
                                 </div>
                                 {highlights[0] && (
                                     <div>
-                                        <p className="text-xs uppercase tracking-widest text-[var(--accent-violet)] mb-2 font-mono font-semibold">
+                                        <p className="text-sm md:text-base uppercase tracking-wider text-[var(--accent-violet)] mb-2 font-mono font-bold">
                                             The Thinking
                                         </p>
-                                        <p className="text-sm md:text-base text-[var(--text-secondary)] leading-relaxed">
+                                        <p className="text-base md:text-lg text-[var(--text-secondary)] leading-relaxed">
                                             {highlights[0]}
                                         </p>
                                     </div>
                                 )}
                                 {(highlights[1] || highlights[0]) && (
                                     <div>
-                                        <p className="text-xs uppercase tracking-widest text-[var(--accent-teal)] mb-2 font-mono font-semibold">
+                                        <p className="text-sm md:text-base uppercase tracking-wider text-[var(--accent-teal)] mb-2 font-mono font-bold">
                                             The Solution
                                         </p>
-                                        <p className="text-sm md:text-base text-[var(--text-secondary)] leading-relaxed">
+                                        <p className="text-base md:text-lg text-[var(--text-secondary)] leading-relaxed">
                                             {highlights[1] || highlights[0]}
                                         </p>
                                     </div>
