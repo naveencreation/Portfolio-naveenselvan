@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { submitContactForm } from '@/lib/api';
 
 interface ActFutureProps {
     email?: string;
@@ -28,13 +29,23 @@ export function ActFuture({ email }: ActFutureProps) {
     const actRef = useRef<HTMLElement>(null);
     const [isPanelOpen, setIsPanelOpen] = useState(false);
     const [formData, setFormData] = useState({ name: '', email: '', message: '' });
+    const [isSending, setIsSending] = useState(false);
+    const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        // Open mailto with form data
-        const subject = `Message from ${formData.name}`;
-        const body = `From: ${formData.name}\nEmail: ${formData.email}\n\n${formData.message}`;
-        window.location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        setIsSending(true);
+        setSubmitStatus('idle');
+        try {
+            await submitContactForm(formData);
+            setSubmitStatus('success');
+            setFormData({ name: '', email: '', message: '' });
+        } catch (error) {
+            console.error('Failed to submit contact form:', error);
+            setSubmitStatus('error');
+        } finally {
+            setIsSending(false);
+        }
     };
 
     const socialLinks = [
@@ -171,45 +182,95 @@ export function ActFuture({ email }: ActFutureProps) {
                                 }}
                             >
                                 <div className="w-full max-w-md">
-                                    {/* Form */}
-                                    <form onSubmit={handleSubmit} className="space-y-5">
-                                        <div>
-                                            <input
-                                                type="text"
-                                                placeholder="Your name"
-                                                value={formData.name}
-                                                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                                                className="w-full px-5 py-4 bg-[#12121a] border border-[#2a2a3a] rounded-lg text-white placeholder-[#606070] focus:border-[#8b5cf6] focus:outline-none transition-colors"
-                                                required
-                                            />
-                                        </div>
-                                        <div>
-                                            <input
-                                                type="email"
-                                                placeholder="Your email"
-                                                value={formData.email}
-                                                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                                                className="w-full px-5 py-4 bg-[#12121a] border border-[#2a2a3a] rounded-lg text-white placeholder-[#606070] focus:border-[#8b5cf6] focus:outline-none transition-colors"
-                                                required
-                                            />
-                                        </div>
-                                        <div>
-                                            <textarea
-                                                placeholder="Your message"
-                                                value={formData.message}
-                                                onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                                                rows={4}
-                                                className="w-full px-5 py-4 bg-[#12121a] border border-[#2a2a3a] rounded-lg text-white placeholder-[#606070] focus:border-[#8b5cf6] focus:outline-none transition-colors resize-none"
-                                                required
-                                            />
-                                        </div>
-                                        <button
-                                            type="submit"
-                                            className="w-full py-4 bg-[#8b5cf6] hover:bg-[#7c3aed] text-white rounded-lg font-medium transition-colors"
-                                        >
-                                            Send Message
-                                        </button>
-                                    </form>
+                                    <AnimatePresence mode="wait">
+                                        {submitStatus === 'success' ? (
+                                            <motion.div
+                                                key="success-message"
+                                                initial={{ opacity: 0, scale: 0.95 }}
+                                                animate={{ opacity: 1, scale: 1 }}
+                                                exit={{ opacity: 0, scale: 0.95 }}
+                                                className="text-center py-8 space-y-4"
+                                            >
+                                                <div className="w-16 h-16 bg-[#14b8a6]/10 border border-[#14b8a6]/30 text-[#14b8a6] rounded-full flex items-center justify-center mx-auto">
+                                                    <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                                    </svg>
+                                                </div>
+                                                <h3 className="text-2xl font-display font-medium text-white">Message Sent!</h3>
+                                                <p className="text-sm text-[#a0a0b0]">
+                                                    Thank you for reaching out. I'll get back to you as soon as possible.
+                                                </p>
+                                                <button
+                                                    onClick={() => setSubmitStatus('idle')}
+                                                    className="mt-4 px-6 py-2 border border-[#8b5cf6]/30 hover:border-[#8b5cf6] text-xs uppercase tracking-widest text-[#a0a0b0] hover:text-white rounded-full transition-colors"
+                                                >
+                                                    Send another message
+                                                </button>
+                                            </motion.div>
+                                        ) : (
+                                            <motion.form
+                                                key="contact-form"
+                                                initial={{ opacity: 0 }}
+                                                animate={{ opacity: 1 }}
+                                                exit={{ opacity: 0 }}
+                                                onSubmit={handleSubmit}
+                                                className="space-y-5"
+                                            >
+                                                <div>
+                                                    <input
+                                                        type="text"
+                                                        placeholder="Your name"
+                                                        value={formData.name}
+                                                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                                                        className="w-full px-5 py-4 bg-[#12121a] border border-[#2a2a3a] rounded-lg text-white placeholder-[#606070] focus:border-[#8b5cf6] focus:outline-none transition-colors"
+                                                        required
+                                                        disabled={isSending}
+                                                    />
+                                                </div>
+                                                <div>
+                                                    <input
+                                                        type="email"
+                                                        placeholder="Your email"
+                                                        value={formData.email}
+                                                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                                                        className="w-full px-5 py-4 bg-[#12121a] border border-[#2a2a3a] rounded-lg text-white placeholder-[#606070] focus:border-[#8b5cf6] focus:outline-none transition-colors"
+                                                        required
+                                                        disabled={isSending}
+                                                    />
+                                                </div>
+                                                <div>
+                                                    <textarea
+                                                        placeholder="Your message"
+                                                        value={formData.message}
+                                                        onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                                                        rows={4}
+                                                        className="w-full px-5 py-4 bg-[#12121a] border border-[#2a2a3a] rounded-lg text-white placeholder-[#606070] focus:border-[#8b5cf6] focus:outline-none transition-colors resize-none"
+                                                        required
+                                                        disabled={isSending}
+                                                    />
+                                                </div>
+                                                {submitStatus === 'error' && (
+                                                    <div className="text-sm text-red-500 text-center bg-red-500/10 border border-red-500/20 py-2 rounded-lg">
+                                                        Failed to send message. Please try again.
+                                                    </div>
+                                                )}
+                                                <button
+                                                    type="submit"
+                                                    disabled={isSending}
+                                                    className="w-full py-4 bg-[#8b5cf6] hover:bg-[#7c3aed] disabled:bg-[#8b5cf6]/50 disabled:cursor-not-allowed text-white rounded-lg font-medium transition-colors flex items-center justify-center gap-2"
+                                                >
+                                                    {isSending ? (
+                                                        <>
+                                                            <div className="w-5 h-5 rounded-full border-2 border-white/20 border-t-white animate-spin" />
+                                                            Sending...
+                                                        </>
+                                                    ) : (
+                                                        'Send Message'
+                                                    )}
+                                                </button>
+                                            </motion.form>
+                                        )}
+                                    </AnimatePresence>
 
                                     {/* Social Links */}
                                     <div className="mt-10 pt-8 border-t border-[#2a2a3a]">
