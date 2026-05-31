@@ -1,5 +1,5 @@
 // Narrative Journey Components
-export { NarrativeJourney, useAccent } from './NarrativeJourney';
+export { NarrativeJourney } from './NarrativeJourney';
 export { ActCuriosity } from './ActCuriosity';
 export { ActEngineering } from './ActEngineering';
 export { ActProjects } from './ActProjects';

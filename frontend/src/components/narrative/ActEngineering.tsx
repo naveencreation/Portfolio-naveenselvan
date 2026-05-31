@@ -63,8 +63,11 @@ function Typewriter({
             }, speed);
             return () => clearTimeout(timer);
         } else {
-            setCompleted(true);
-            onComplete?.();
+            const timer = setTimeout(() => {
+                setCompleted(true);
+                onComplete?.();
+            }, 0);
+            return () => clearTimeout(timer);
         }
     }, [displayed, text, speed, started, completed, onComplete]);
 
@@ -152,7 +155,8 @@ export function ActEngineering({ profile }: ActEngineeringProps) {
     // Start showing first command when in view
     useEffect(() => {
         if (isInView && visibleCommands === 0) {
-            setVisibleCommands(1);
+            const timer = setTimeout(() => setVisibleCommands(1), 0);
+            return () => clearTimeout(timer);
         }
     }, [isInView, visibleCommands]);
 

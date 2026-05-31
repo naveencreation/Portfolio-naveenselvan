@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, createContext, useContext } from 'react';
+import { useEffect, useRef, useState, createContext } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import type { Portfolio } from '@/types/portfolio';
@@ -37,7 +37,7 @@ const AccentContext = createContext<AccentContextType>({
     scrollProgress: 0,
 });
 
-export const useAccent = () => useContext(AccentContext);
+
 
 // Color interpolation helper
 function interpolateColor(color1: string, color2: string, factor: number): string {
@@ -67,12 +67,9 @@ function getAccentForProgress(progress: number): string {
 
     if (progress < 0.2) {
         return interpolateColor(colors.slate, colors.violet, progress / 0.2);
-    } else if (progress < 0.5) {
-        return interpolateColor(colors.violet, colors.amber, (progress - 0.2) / 0.3);
-    } else if (progress < 0.8) {
-        return interpolateColor(colors.amber, colors.teal, (progress - 0.5) / 0.3);
     } else {
-        return colors.teal;
+        // Hold violet for the rest of the journey as requested by user
+        return colors.violet;
     }
 }
 
