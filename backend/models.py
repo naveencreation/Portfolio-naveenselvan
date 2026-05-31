@@ -58,6 +58,7 @@ class Project(Base):
     
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String(200), nullable=False)
+    role = Column(String(150))
     description = Column(Text)
     technologies = Column(Text)  # Comma-separated
     highlights = Column(Text)  # JSON array as string

@@ -7,7 +7,8 @@ from models import (
     Project, SkillCategory, Skill, Certification
 )
 
-# Create tables
+# Create/recreate tables
+Base.metadata.drop_all(bind=engine)
 Base.metadata.create_all(bind=engine)
 
 
@@ -81,33 +82,38 @@ When I'm not coding, you'll find me exploring new AI research papers, contributi
         db.add(Responsibility(experience_id=experience.id, description=resp))
     
     # Projects
-    projects = [
-        Project(
-            title="AI Notetaker (Prayag.ai)",
-            description="A scalable meeting intelligence platform that leverages AI to transform meetings into actionable insights.",
-            technologies="React,Node.js,FastAPI,Redis,PostgreSQL,OpenAI,Gemini",
-            highlights='["Integrated OpenAI Agents and Gemini models for meeting summaries, action items, and contextual insights","Implemented RAG pipelines, sentiment analysis, and multi-format document ingestion","Built multi-agent workflow: transcription → understanding → summarization → output","Reduced inference latency by 30% using Redis caching and async processing"]',
-            link="https://prayag.ai",
-            is_featured=1
-        ),
-        Project(
-            title="Vehicle Routing Optimization",
-            description="A Genetic Algorithm-based solver for the Vehicle Routing Problem (VRP). Tackles large-scale NP-hard optimization problems.",
-            technologies="Python,DEAP,Genetic Algorithm",
-            highlights='["Built GA-based solver reducing route cost by 30%","Implemented custom crossover, mutation, and fitness strategies"]',
-            github="https://github.com/naveencreation",
-            is_featured=0
-        ),
-        Project(
-            title="AutoML Framework",
-            description="An automated machine learning pipeline for data cleaning, feature engineering, model selection, and training.",
-            technologies="Python,Streamlit,Scikit-learn,TensorFlow",
-            highlights='["Improved prediction accuracy by 20%","Reduced preprocessing time by 30%"]',
-            github="https://github.com/naveencreation",
-            is_featured=0
+    import json
+    import os
+    
+    project_json_path = os.path.join(os.path.dirname(__file__), "..", "Resource", "Project.json")
+    with open(project_json_path, "r", encoding="utf-8") as f:
+        projects_data = json.load(f)
+        
+    for p_data in projects_data.get("projects", []):
+        name = p_data.get("name")
+        role = p_data.get("role")
+        technologies = ",".join(p_data.get("technologies", []))
+        highlights = json.dumps(p_data.get("highlights", []))
+        summary = p_data.get("summary")
+        
+        # Determine if featured
+        is_featured = 1 if "AI Notetaker" in name else 0
+        
+        # Hardcode links/repo as required or default
+        link = "https://prayag.ai" if is_featured == 1 else None
+        # Default GitHub repo for Naveen
+        github = "https://github.com/naveencreation"
+        
+        project = Project(
+            title=name,
+            role=role,
+            description=summary,
+            technologies=technologies,
+            highlights=highlights,
+            link=link,
+            github=github,
+            is_featured=is_featured
         )
-    ]
-    for project in projects:
         db.add(project)
     
     # Skills
@@ -139,7 +145,7 @@ When I'm not coding, you'll find me exploring new AI research papers, contributi
     
     db.commit()
     db.close()
-    print("✅ Database seeded successfully!")
+    print("Database seeded successfully!")
 
 
 if __name__ == "__main__":

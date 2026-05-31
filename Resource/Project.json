@@ -1,0 +1,157 @@
+{
+  "projects": [
+    {
+      "name": "Flowly (AI-Powered Transcription & Analysis Platform)",
+      "role": "AI Engineer / Backend Developer",
+      "technologies": [
+        "Python",
+        "FastAPI",
+        "SQLAlchemy",
+        "PostgreSQL",
+        "Redis",
+        "ARQ",
+        "FFmpeg",
+        "Google Gemini API",
+        "Groq API",
+        "Sentry",
+        "Prometheus"
+      ],
+      "summary": "Engineered a highly available, asynchronous REST API for automated multimedia transcription and AI-driven analysis. Designed resilient background processing pipelines, pluggable AI engine routing, and robust production-monitoring layers.",
+      "highlights": [
+        "Architected a high-throughput FastAPI backend to handle large audio/video file uploads, integrating FFmpeg for automated media extraction and preprocessing.",
+        "Developed a pluggable TranscriptionService routing layer, enabling dynamic, seamless switching between Google Gemini and Groq/Whisper inference engines.",
+        "Engineered a secure, persistent local-server file storage architecture to manage large media payloads and bypass external cloud dependency.",
+        "Designed a multi-tier asynchronous job execution system utilizing Redis and ARQ, complete with a custom SQLite fallback mode.",
+        "Implemented a state-reconciliation mechanism during application startup to automatically detect, recover, and reset processing tasks stalled due to server crashes.",
+        "Integrated Sentry for distributed tracing and Prometheus for real-time metric instrumentation, hardening the API with slowapi rate-limiting."
+      ]
+    },
+    {
+      "name": "JustPrompt (Image & Prompt Discovery Platform)",
+      "role": "Full-Stack Developer",
+      "technologies": [
+        "Next.js",
+        "TypeScript",
+        "PostgreSQL",
+        "Supabase",
+        "Tailwind CSS",
+        "Vitest",
+        "Vercel"
+      ],
+      "summary": "Engineered a high-performance web platform designed for exploring, searching, and managing curated image prompts, featuring a highly responsive gallery and a secure administrative portal.",
+      "highlights": [
+        "Architected backend logic using strict Repository and Service patterns, decoupling data access from business rules for maximum testability.",
+        "Implemented the Factory design pattern across Storage, Caching, Rate Limiting, and Search modules to allow seamless swapping of infrastructure providers.",
+        "Utilized the Next.js App Router to build dynamic public routes and a RESTful API with dedicated routes for cache revalidation and pre-signed upload URLs.",
+        "Developed custom rate-limiting middleware and a centralized observability layer for real-time error tracking and telemetry.",
+        "Built a memory-caching layer combined with a scheduled Cron job to batch and flush high-volume interactions (like counts) to the PostgreSQL database asynchronously.",
+        "Engineered an automated trending algorithm that calculates and refreshes trending items via a background Cron service."
+      ]
+    },
+    {
+      "name": "AegisPrep (Automated Data Profiling & Preprocessing Platform)",
+      "role": "Full-Stack Developer / AI Engineer",
+      "technologies": [
+        "Python",
+        "FastAPI",
+        "SQLAlchemy",
+        "React",
+        "Vite",
+        "Tailwind CSS"
+      ],
+      "summary": "Engineered a comprehensive full-stack application designed to streamline machine learning preprocessing for tabular datasets, providing an end-to-end pipeline for versioning, profiling, and transformations.",
+      "highlights": [
+        "Architected a modular FastAPI backend utilizing a strict separation of concerns across Routers, Services, Schemas, and Database models.",
+        "Developed dedicated backend services to automatically extract statistical insights from uploaded datasets and validate data integrity.",
+        "Implemented a robust transformation engine to systematically apply cleaning and preprocessing rules to tabular data for ML model preparation.",
+        "Designed a local storage and database schema capable of managing dataset iterations, ensuring full reproducibility of preprocessing steps.",
+        "Enforced strict data validation using Pydantic schemas, ensuring type-safe contracts between the React frontend and FastAPI backend."
+      ]
+    },
+    {
+      "name": "LeetCode Learner (Interactive DSA Visualizer)",
+      "role": "Full-Stack Developer",
+      "technologies": [
+        "Next.js",
+        "React",
+        "TypeScript",
+        "Tailwind CSS"
+      ],
+      "summary": "Engineered a comprehensive, interactive educational platform focused on Data Structures and Algorithms (DSA), specifically featuring step-by-step visualizers for binary tree operations.",
+      "highlights": [
+        "Architected the Next.js frontend utilizing a strict feature-sliced design pattern to isolate domain logic and maintain a highly scalable codebase.",
+        "Developed custom traversal engines to programmatically break down and manage the execution state of various tree algorithms.",
+        "Built synchronized UI panels (CallStack, Code, Explanation, Result) that react simultaneously to the traversal engine's state changes without rendering lag.",
+        "Implemented a TreePanel for real-time node rendering and a TreeSetupModal allowing users to intuitively input and manipulate custom binary trees.",
+        "Utilized specialized React hooks and centralized state selectors to cleanly connect core traversal logic to frontend components."
+      ]
+    },
+    {
+      "name": "MagicLable (Static Web Interface)",
+      "role": "Front-End Developer",
+      "technologies": [
+        "HTML5",
+        "Vanilla JavaScript",
+        "CSS3",
+        "Tailwind CSS",
+        "PostCSS",
+        "Node.js"
+      ],
+      "summary": "Developed a lightweight, static web application centered around rendering and interacting with visual label assets, leveraging modern utility-first CSS build pipelines.",
+      "highlights": [
+        "Engineered client-side logic using vanilla JavaScript and standard HTML to manipulate the DOM, ensuring a minimal footprint and fast execution.",
+        "Configured and integrated Tailwind CSS into the build process via PostCSS to generate optimized, utility-driven styles.",
+        "Managed dynamic and playful vector graphics (SVGs), ensuring resolution-independent rendering across various device sizes.",
+        "Maintained a Node-based development environment utilizing tools like chokidar, sucrase, and fast-glob to streamline the static build workflow."
+      ]
+    },
+    {
+      "name": "AI Notetaker (Prayag.ai)",
+      "role": "AI Engineering Intern",
+      "technologies": [
+        "React",
+        "Node.js",
+        "FastAPI",
+        "Redis",
+        "PostgreSQL",
+        "OpenAI",
+        "Gemini"
+      ],
+      "summary": "A scalable meeting intelligence platform providing AI-powered meeting summaries, action items, and contextual insights.",
+      "highlights": [
+        "Integrated OpenAI Agents and Gemini models for AI-powered meeting summaries, action items, and contextual insights.",
+        "Implemented pipelines for sentiment analysis, embeddings, RAG, and multi-format document ingestion.",
+        "Developed a multi-agent workflow for transcription understanding to summarization output generation.",
+        "Reduced inference latency by 30% through Redis caching, optimized query design, and async background processing.",
+        "Designed FastAPI microservices with async I/O, structured logging, dependency injection, and task queues."
+      ]
+    },
+    {
+      "name": "Vehicle Routing Optimization Using Genetic Algorithm",
+      "role": "Developer",
+      "technologies": [
+        "Python",
+        "DEAP"
+      ],
+      "summary": "Built a GA-based solver for the Vehicle Routing Problem.",
+      "highlights": [
+        "Reduced route cost by 30% through evolutionary optimization.",
+        "Implemented custom crossover, mutation, and fitness strategies for large-scale NP-hard route planning."
+      ]
+    },
+    {
+      "name": "Automated Machine Learning (AutoML) Framework",
+      "role": "Developer",
+      "technologies": [
+        "Python",
+        "Streamlit",
+        "Scikit-learn",
+        "TensorFlow"
+      ],
+      "summary": "Developed a pipeline for automated cleaning, feature engineering, model selection, and training.",
+      "highlights": [
+        "Improved prediction accuracy by 20% and reduced preprocessing time by 30%."
+      ]
+    }
+  ]
+}

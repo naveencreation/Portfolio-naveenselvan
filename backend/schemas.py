@@ -61,6 +61,7 @@ class ExperienceResponse(ExperienceBase):
 # Project schemas
 class ProjectBase(BaseModel):
     title: str
+    role: Optional[str] = None
     description: Optional[str] = None
     technologies: Optional[str] = None
     highlights: Optional[str] = None
