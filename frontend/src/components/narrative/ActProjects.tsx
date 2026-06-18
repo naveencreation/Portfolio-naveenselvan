@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useMemo } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import type { Project } from '@/types/portfolio';
@@ -19,7 +19,9 @@ export function ActProjects({ projects }: ActProjectsProps) {
     const [activeModalProject, setActiveModalProject] = useState<Project | null>(null);
 
     // Sort: featured project first
-    const sortedProjects = [...projects].sort((a, b) => b.is_featured - a.is_featured);
+    const sortedProjects = useMemo(() => {
+        return [...projects].sort((a, b) => b.is_featured - a.is_featured);
+    }, [projects]);
 
     useEffect(() => {
         if (!deckWrapperRef.current || sortedProjects.length === 0) return;
@@ -159,7 +161,7 @@ export function ActProjects({ projects }: ActProjectsProps) {
         return () => {
             if (ctx) ctx.revert();
         };
-    }, [sortedProjects.length]);
+    }, [sortedProjects]);
 
     if (!projects || projects.length === 0) return null;
 
