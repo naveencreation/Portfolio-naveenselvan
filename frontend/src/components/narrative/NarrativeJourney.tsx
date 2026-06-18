@@ -148,7 +148,7 @@ export function NarrativeJourney({ data }: NarrativeJourneyProps) {
                 <ActHuman profile={data?.profile || null} />
 
                 {/* ACT 6: The Future - Single invitation */}
-                <ActFuture email={data?.profile?.email} />
+                <ActFuture profile={data?.profile || null} />
             </div>
         </AccentContext.Provider>
     );

@@ -22,10 +22,9 @@ export function ScrollProgress({ currentAct }: ScrollProgressProps) {
             transition={{ duration: 0.8, delay: 1 }}
         >
             {ACTS.map((act) => (
-                <motion.div
+                <div
                     key={act.num}
-                    className="relative group"
-                    whileHover={{ scale: 1.2 }}
+                    className="relative group cursor-pointer py-1"
                 >
                     {/* Dot */}
                     <div
@@ -33,17 +32,12 @@ export function ScrollProgress({ currentAct }: ScrollProgressProps) {
                     />
 
                     {/* Label on hover */}
-                    <motion.div
-                        className="absolute right-6 top-1/2 -translate-y-1/2 whitespace-nowrap pointer-events-none"
-                        initial={{ opacity: 0, x: 10 }}
-                        whileHover={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.2 }}
-                    >
-                        <span className="text-xs font-mono text-[var(--text-muted)] bg-[var(--color-surface)] px-2 py-1 rounded">
+                    <div className="absolute right-8 top-1/2 -translate-y-1/2 whitespace-nowrap pointer-events-none opacity-0 translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-350">
+                        <span className="text-[10px] font-mono text-[var(--text-secondary)] bg-[#0d0d14]/90 border border-white/5 px-2.5 py-1 rounded-md shadow-xl backdrop-blur-md">
                             {act.label}
                         </span>
-                    </motion.div>
-                </motion.div>
+                    </div>
+                </div>
             ))}
         </motion.div>
     );

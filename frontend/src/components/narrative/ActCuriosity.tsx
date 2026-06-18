@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 
 gsap.registerPlugin(ScrollTrigger);
 
-// Floating shape component for chaos animation
+// Floating shape component for chaos animation (Stateless/Pure layout)
 function ChaosShape({
     index,
     type
@@ -13,61 +13,6 @@ function ChaosShape({
     index: number;
     type: 'square' | 'circle' | 'line'
 }) {
-    const shapeRef = useRef<HTMLDivElement>(null);
-
-    useEffect(() => {
-        if (!shapeRef.current) return;
-
-        // Random initial position
-        const randomX = Math.random() * 100 - 50;
-        const randomY = Math.random() * 100 - 50;
-        const randomRotation = Math.random() * 360;
-        const randomScale = 0.5 + Math.random() * 1;
-
-        gsap.set(shapeRef.current, {
-            x: randomX + '%',
-            y: randomY + '%',
-            rotation: randomRotation,
-            scale: randomScale,
-            opacity: 0,
-        });
-
-        // Animate chaos to order
-        const tl = gsap.timeline({
-            scrollTrigger: {
-                trigger: '.act-curiosity',
-                start: 'top center',
-                end: 'bottom center',
-                scrub: 1,
-            },
-        });
-
-        tl.to(shapeRef.current, {
-            opacity: 0.6,
-            duration: 0.3,
-        })
-            .to(shapeRef.current, {
-                x: 0,
-                y: 0,
-                rotation: 0,
-                scale: 1,
-                opacity: 1,
-                duration: 0.7,
-                ease: 'power2.inOut',
-            });
-
-        // Continuous subtle float animation
-        gsap.to(shapeRef.current, {
-            y: '+=10',
-            rotation: '+=5',
-            duration: 3 + Math.random() * 2,
-            ease: 'sine.inOut',
-            repeat: -1,
-            yoyo: true,
-            delay: Math.random() * 2,
-        });
-    }, []);
-
     const shapeStyles = {
         square: 'w-8 h-8 md:w-12 md:h-12 border border-current',
         circle: 'w-6 h-6 md:w-10 md:h-10 rounded-full border border-current',
@@ -76,8 +21,7 @@ function ChaosShape({
 
     return (
         <div
-            ref={shapeRef}
-            className={`absolute ${shapeStyles[type]} text-[var(--accent-current)] opacity-0 will-change-transform`}
+            className={`chaos-shape absolute ${shapeStyles[type]} text-[var(--accent-current)] will-change-transform`}
             style={{
                 left: `${15 + (index % 5) * 17}%`,
                 top: `${10 + Math.floor(index / 5) * 20}%`,
@@ -86,36 +30,8 @@ function ChaosShape({
     );
 }
 
-// Incomplete interface fragment
+// Incomplete interface fragment (Stateless/Pure layout)
 function InterfaceFragment({ index }: { index: number }) {
-    const fragmentRef = useRef<HTMLDivElement>(null);
-
-    useEffect(() => {
-        if (!fragmentRef.current) return;
-
-        gsap.fromTo(
-            fragmentRef.current,
-            {
-                opacity: 0,
-                scale: 0.8,
-                y: 50,
-            },
-            {
-                opacity: 1,
-                scale: 1,
-                y: 0,
-                duration: 1,
-                ease: 'power3.out',
-                scrollTrigger: {
-                    trigger: fragmentRef.current,
-                    start: 'top 80%',
-                    toggleActions: 'play none none reverse',
-                },
-                delay: index * 0.15,
-            }
-        );
-    }, [index]);
-
     const fragments = [
         // Incomplete search bar
         <div className="w-48 h-8 rounded-lg bg-[var(--color-surface)] border border-[var(--accent-current)]/20 flex items-center px-3 gap-2">
@@ -143,8 +59,7 @@ function InterfaceFragment({ index }: { index: number }) {
 
     return (
         <div
-            ref={fragmentRef}
-            className="absolute opacity-0 text-[var(--accent-current)]"
+            className="interface-fragment absolute text-[var(--accent-current)]"
             style={{
                 left: `${10 + (index % 4) * 22}%`,
                 top: `${20 + Math.floor(index / 4) * 25}%`,
@@ -160,27 +75,112 @@ export function ActCuriosity() {
     const textRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        if (!textRef.current) return;
+        if (!actRef.current) return;
 
-        // Animate the main text
-        gsap.fromTo(
-            textRef.current,
-            {
-                opacity: 0,
-                y: 60,
-            },
-            {
-                opacity: 1,
-                y: 0,
-                duration: 1.2,
-                ease: 'power3.out',
+        const ctx = gsap.context(() => {
+            // ─── Consolidation: 1 ScrollTrigger for all 15 chaos shapes ───
+            const shapes = gsap.utils.toArray('.chaos-shape');
+            const mainTl = gsap.timeline({
                 scrollTrigger: {
-                    trigger: textRef.current,
-                    start: 'top 70%',
-                    toggleActions: 'play none none reverse',
+                    trigger: actRef.current,
+                    start: 'top center',
+                    end: 'bottom center',
+                    scrub: 1,
                 },
+            });
+
+            shapes.forEach((shape) => {
+                const randomX = Math.random() * 100 - 50;
+                const randomY = Math.random() * 100 - 50;
+                const randomRotation = Math.random() * 360;
+                const randomScale = 0.5 + Math.random() * 1;
+
+                // Set initial random state
+                gsap.set(shape as HTMLElement, {
+                    xPercent: randomX,
+                    yPercent: randomY,
+                    rotation: randomRotation,
+                    scale: randomScale,
+                    opacity: 0,
+                });
+
+                // Add to timeline
+                mainTl.fromTo(shape as HTMLElement,
+                    { opacity: 0 },
+                    { opacity: 0.6, duration: 0.3 },
+                    0
+                ).to(shape as HTMLElement, {
+                    xPercent: 0,
+                    yPercent: 0,
+                    rotation: 0,
+                    scale: 1,
+                    opacity: 1,
+                    duration: 0.7,
+                    ease: 'power2.inOut',
+                }, 0.3);
+
+                // Continuous float animation (not linked to scroll)
+                gsap.to(shape as HTMLElement, {
+                    y: '+=10',
+                    rotation: '+=5',
+                    duration: 3 + Math.random() * 2,
+                    ease: 'sine.inOut',
+                    repeat: -1,
+                    yoyo: true,
+                    delay: Math.random() * 2,
+                });
+            });
+
+            // ─── Timeline for interface fragments ───
+            const fragments = gsap.utils.toArray('.interface-fragment');
+            fragments.forEach((frag, idx) => {
+                gsap.fromTo(
+                    frag as HTMLElement,
+                    {
+                        opacity: 0,
+                        scale: 0.8,
+                        y: 50,
+                    },
+                    {
+                        opacity: 1,
+                        scale: 1,
+                        y: 0,
+                        duration: 1,
+                        ease: 'power3.out',
+                        scrollTrigger: {
+                            trigger: frag as HTMLElement,
+                            start: 'top 80%',
+                            toggleActions: 'play none none reverse',
+                        },
+                        delay: idx * 0.15,
+                    }
+                );
+            });
+
+            // ─── Main narrative text reveal ───
+            if (textRef.current) {
+                gsap.fromTo(
+                    textRef.current,
+                    {
+                        opacity: 0,
+                        y: 60,
+                    },
+                    {
+                        opacity: 1,
+                        y: 0,
+                        duration: 1.2,
+                        ease: 'power3.out',
+                        scrollTrigger: {
+                            trigger: textRef.current,
+                            start: 'top 70%',
+                            toggleActions: 'play none none reverse',
+                        },
+                    }
+                );
             }
-        );
+        }, actRef);
+
+        return () => ctx.revert();
     }, []);
 
     // Generate shapes for chaos animation
