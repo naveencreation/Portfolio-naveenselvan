@@ -89,7 +89,7 @@ export function NarrativeJourney({ data }: NarrativeJourneyProps) {
         let ticking = false;
 
         // Main scroll progress tracker
-        ScrollTrigger.create({
+        const st = ScrollTrigger.create({
             trigger: containerRef.current,
             start: 'top top',
             end: 'bottom bottom',
@@ -119,7 +119,7 @@ export function NarrativeJourney({ data }: NarrativeJourneyProps) {
         });
 
         return () => {
-            ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+            st.kill();
         };
     }, []);
 
