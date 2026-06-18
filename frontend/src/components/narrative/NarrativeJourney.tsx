@@ -118,6 +118,9 @@ export function NarrativeJourney({ data }: NarrativeJourneyProps) {
             },
         });
 
+        // Recalculate all triggers once layout is settled on load
+        ScrollTrigger.refresh();
+
         return () => {
             st.kill();
         };
