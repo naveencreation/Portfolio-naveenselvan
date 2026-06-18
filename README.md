@@ -1,14 +1,12 @@
 # 🚀 VoidStack Portfolio
 
-A modern, full-stack personal portfolio website built with React + FastAPI, featuring a stunning dark theme with glassmorphism design.
+A modern, high-performance personal portfolio website built with React, featuring a stunning dark theme with glassmorphism design and smooth scroll-driven storytelling.
 
 <div align="center">
 
 ![React](https://img.shields.io/badge/React-18-61DAFB?logo=react&logoColor=white)
-![FastAPI](https://img.shields.io/badge/FastAPI-0.115-009688?logo=fastapi&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=white)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind-4-06B6D4?logo=tailwindcss&logoColor=white)
-![SQLite](https://img.shields.io/badge/SQLite-3-003B57?logo=sqlite&logoColor=white)
 
 </div>
 
@@ -18,10 +16,9 @@ A modern, full-stack personal portfolio website built with React + FastAPI, feat
 
 - 🎨 **Dark Theme** - Sleek purple/indigo gradient aesthetic with glassmorphism
 - 📱 **Fully Responsive** - Works perfectly on all device sizes
-- ⚡ **Fast** - Vite-powered frontend with optimized builds
-- 🔄 **Dynamic Content** - Data served from FastAPI + SQLite backend
-- 📧 **Working Contact Form** - SMTP email notifications on form submission
-- 🎭 **Smooth Animations** - Animated chevron scroll indicator & transitions
+- ⚡ **Fast & Serverless** - Static site serving portfolio data instantly with zero API latency
+- 📧 **Working Contact Form** - Powered by Web3Forms for secure form-to-email routing
+- 🎭 **Smooth Animations** - Built with GSAP ScrollTrigger and Framer Motion for cinematic storytelling
 
 ---
 
@@ -34,17 +31,8 @@ A modern, full-stack personal portfolio website built with React + FastAPI, feat
 | TypeScript | Type Safety |
 | Vite | Build Tool |
 | Tailwind CSS v4 | Styling |
-| shadcn/ui | UI Components |
+| GSAP & Framer Motion | Scroll-driven Animations |
 | Lucide React | Icons |
-
-### Backend
-| Technology | Purpose |
-|------------|---------|
-| FastAPI | API Framework |
-| SQLAlchemy | ORM |
-| SQLite | Database |
-| Pydantic | Validation |
-| SMTP | Email Service |
 
 ---
 
@@ -52,27 +40,15 @@ A modern, full-stack personal portfolio website built with React + FastAPI, feat
 
 ```
 VoidStack/
-├── backend/
-│   ├── main.py              # FastAPI app & routes
-│   ├── database.py          # SQLAlchemy config
-│   ├── models.py            # Database models
-│   ├── schemas.py           # Pydantic schemas
-│   ├── email_service.py     # SMTP email notifications
-│   ├── seed.py              # Database seeder
-│   ├── requirements.txt     # Python dependencies
-│   └── .env                  # Environment variables (create this)
-│
 ├── frontend/
 │   ├── src/
-│   │   ├── components/      # Navbar, Footer, UI components
-│   │   ├── pages/           # Hero, About, Experience, Projects, Skills, Contact
-│   │   ├── lib/             # API client & utilities
+│   │   ├── components/      # Scroll-driven Act components
+│   │   ├── data/            # Static portfolio.json data
+│   │   ├── lib/             # API client & Web3Forms integration
 │   │   ├── types/           # TypeScript interfaces
-│   │   └── index.css        # Tailwind theme config
+│   │   └── index.css        # Tailwind & custom CSS themes
 │   ├── package.json
 │   └── vite.config.ts
-│
-└── venv/                    # Python virtual environment
 ```
 
 ---
@@ -81,125 +57,29 @@ VoidStack/
 
 ### Prerequisites
 - Node.js 18+
-- Python 3.11+
 - Git
 
-### 1. Clone the Repository
-
-```bash
-git clone https://github.com/naveencreation/Portfolio---VoidStack.git
-cd Portfolio---VoidStack
-```
-
-### 2. Backend Setup
-
-```bash
-# Create virtual environment
-python -m venv venv
-
-# Activate virtual environment
-.\venv\Scripts\Activate.ps1   # Windows PowerShell
-# or
-source venv/bin/activate       # Linux/Mac
-
-# Install dependencies
-cd backend
-pip install -r requirements.txt
-
-# Create .env file with your email credentials
-```
-
-Create `backend/.env`:
-```env
-MAIL_USERNAME=your-email@gmail.com
-MAIL_PASSWORD=your-app-password
-MAIL_FROM=your-email@gmail.com
-MAIL_PORT=587
-MAIL_SERVER=smtp.gmail.com
-```
-
-> 📝 **Note**: For Gmail, you need to generate an [App Password](https://myaccount.google.com/apppasswords)
-
-```bash
-# Seed the database
-python seed.py
-
-# Start the backend server
-uvicorn main:app --reload
-```
-
-Backend will run at: `http://localhost:8000`
-
-### 3. Frontend Setup
-
-```bash
-# Open new terminal and navigate to frontend
-cd frontend
-
-# Install dependencies
-npm install
-
-# Start development server
-npm run dev
-```
-
-Frontend will run at: `http://localhost:5173`
-
----
-
-## 📡 API Endpoints
-
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/health` | Health check |
-| GET | `/api/portfolio` | Get all portfolio data |
-| GET | `/api/profile` | Get profile info |
-| GET | `/api/experience` | Get work experience |
-| GET | `/api/projects` | Get projects |
-| GET | `/api/skills` | Get skills by category |
-| GET | `/api/certifications` | Get certifications |
-| POST | `/api/contact` | Submit contact form (sends email) |
-
-### API Documentation
-- Swagger UI: `http://localhost:8000/docs`
-- ReDoc: `http://localhost:8000/redoc`
-
----
-
-## 🎨 Customization
-
-### Update Portfolio Data
-Edit `backend/seed.py` with your information, then run:
-```bash
-python seed.py
-```
-
-### Change Theme Colors
-Edit `frontend/src/index.css`:
-```css
-@theme {
-  --color-primary: #6366f1;    /* Main accent color */
-  --color-accent: #8b5cf6;     /* Secondary accent */
-  --color-background: #0a0a0f; /* Background */
-  /* ... */
-}
-```
+### Setup
+1. Clone the repository
+2. Navigate to `frontend/`
+3. Create a `.env` file with your Web3Forms key:
+   ```env
+   VITE_WEB3FORMS_KEY=your-web3forms-access-key
+   ```
+4. Install dependencies:
+   ```bash
+   npm install
+   ```
+5. Run the dev server:
+   ```bash
+   npm run dev
+   ```
 
 ---
 
 ## 📦 Deployment
 
-### Frontend (Vercel/Netlify)
-```bash
-cd frontend
-npm run build
-# Deploy the dist/ folder
-```
-
-### Backend (Railway/Render)
-- Set environment variables from `.env`
-- Deploy the `backend/` folder
-- Update frontend API URL in `vite.config.ts`
+Deploy the `frontend` folder directly to **Vercel**, **Netlify**, or **GitHub Pages**. Configure `VITE_WEB3FORMS_KEY` as an environment variable in your deployment platform.
 
 ---
 

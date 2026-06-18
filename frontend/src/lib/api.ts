@@ -1,14 +1,11 @@
 import type { Portfolio } from '@/types/portfolio';
+import portfolioData from '@/data/portfolio.json';
 
-// Use environment variable for production, fallback to proxy for development
-const API_BASE = import.meta.env.VITE_API_URL || '/api';
+const WEB3FORMS_KEY = import.meta.env.VITE_WEB3FORMS_KEY || '';
 
 export async function fetchPortfolio(): Promise<Portfolio> {
-    const response = await fetch(`${API_BASE}/portfolio`);
-    if (!response.ok) {
-        throw new Error('Failed to fetch portfolio data');
-    }
-    return response.json();
+    // Simply return the static portfolio data
+    return portfolioData as Portfolio;
 }
 
 export async function submitContactForm(data: {
@@ -16,14 +13,21 @@ export async function submitContactForm(data: {
     email: string;
     message: string;
 }): Promise<void> {
-    const response = await fetch(`${API_BASE}/contact`, {
+    const response = await fetch('https://api.web3forms.com/submit', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
+            'Accept': 'application/json'
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify({
+            access_key: WEB3FORMS_KEY,
+            subject: `New Contact Message from ${data.name}`,
+            from_name: data.name,
+            ...data
+        }),
     });
     if (!response.ok) {
         throw new Error('Failed to submit contact form');
     }
 }
+
