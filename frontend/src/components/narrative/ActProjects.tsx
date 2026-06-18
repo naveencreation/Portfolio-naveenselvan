@@ -131,8 +131,8 @@ export function ActProjects({ projects }: ActProjectsProps) {
 
                     const depth = idx - prevIdx;
                     const scaleVal = Math.max(0.88, 1 - depth * 0.04);
-                    const opacityVal = depth === 1 ? 1 : depth === 2 ? 0.5 : 0;
-                    const yOffset = -(depth * 18);
+                    const opacityVal = depth === 1 ? 1 : depth === 2 ? 0.6 : 0;
+                    const yOffset = -(depth * 20); // Shifted slightly more up to show top stack edge clearly
 
                     mainTl.to(
                         prevCard,
@@ -212,11 +212,15 @@ export function ActProjects({ projects }: ActProjectsProps) {
                 {/* ── Pinned Wrapper (Block element for clean pinning) ── */}
                 <div ref={deckWrapperRef} className="w-full block">
                     <div className="w-full flex flex-col items-center">
-                        {/* ── Card Deck (with overflow-hidden to crop off-screen cards) ── */}
+                        {/* ── Card Deck (with asymmetrical clip-path to crop bottom but show top stack layers) ── */}
                         <div
                             ref={cardsContainerRef}
-                            className="relative w-full max-w-4xl mx-auto overflow-hidden"
-                            style={{ height: 'clamp(520px, 64vh, 700px)' }}
+                            className="relative w-full max-w-4xl mx-auto"
+                            style={{
+                                height: 'clamp(520px, 64vh, 700px)',
+                                clipPath: 'inset(-60px 0px 0px 0px)',
+                                WebkitClipPath: 'inset(-60px 0px 0px 0px)',
+                            }}
                         >
                             {sortedProjects.map((project, idx) => {
                                 let highlightsList: string[] = [];
