@@ -70,7 +70,7 @@ export function ActProjects({ projects }: ActProjectsProps) {
 
             // ─── PIN ONLY DECK WRAPPER ───
             const numTransitions = sortedProjects.length - 1;
-            const scrollLength = numTransitions * 250; // Taller scroll budget (250vh per card transition) for much slower card movements
+            const scrollLength = numTransitions * 500; // Taller scroll budget (500vh per card transition) for much slower card movements
 
             const stepDuration = 1.0;
             const pauseDuration = 0.8; // Spaced out pauses between card transitions
@@ -82,7 +82,7 @@ export function ActProjects({ projects }: ActProjectsProps) {
                     end: `+=${scrollLength}vh`,
                     pin: true,
                     pinSpacing: true,      // adds pin-spacer to push downstream content down
-                    scrub: 1.5,            // Luxurious, velvety scroll lag (1.5s catch-up) for buttery smoothness
+                    scrub: 1.8,            // Velvet scroll lag (1.8s catch-up) for buttery smoothness without lag buildup
                     anticipatePin: 1,
                     onUpdate: (self) => {
                         const progress = self.progress;
@@ -121,7 +121,8 @@ export function ActProjects({ projects }: ActProjectsProps) {
                         scale: 1,
                         opacity: 1,
                         duration: stepDuration,
-                        ease: 'power2.out', // Smoothly decelerates as the card settles into place
+                        ease: 'none', // Linear ease inside scrubbed timelines prevents speed mismatch stutters
+                        force3D: true, // Force GPU layer creation
                     },
                     startTime
                 );
@@ -134,16 +135,17 @@ export function ActProjects({ projects }: ActProjectsProps) {
                     const depth = idx - prevIdx;
                     const scaleVal = Math.max(0.88, 1 - depth * 0.04);
                     const opacityVal = depth === 1 ? 1 : depth === 2 ? 0.6 : 0;
-                    const yOffset = -(depth * 20); // Shifted slightly more up to show top stack edge clearly
+                    const yOffsetPercent = -(depth * 3.5); // Percentage-based translation prevents subpixel rounding jitters
 
                     mainTl.to(
                         prevCard,
                         {
                             scale: scaleVal,
                             opacity: opacityVal,
-                            y: yOffset,
+                            yPercent: yOffsetPercent,
                             duration: stepDuration,
-                            ease: 'power2.out',
+                            ease: 'none', // Linear ease inside scrubbed timelines prevents speed mismatch stutters
+                            force3D: true, // Force GPU layer promotion
                         },
                         startTime
                     );
