@@ -51,8 +51,8 @@
       "description": "Engineered a highly available, asynchronous REST API for automated multimedia transcription and AI-driven analysis. Designed resilient background processing pipelines, pluggable AI engine routing, and robust production-monitoring layers.",
       "technologies": "Python,FastAPI,SQLAlchemy,PostgreSQL,Redis,ARQ,FFmpeg,Google Gemini API,Groq API,Sentry,Prometheus",
       "highlights": "[\"Architected a high-throughput FastAPI backend to handle large audio/video file uploads, integrating FFmpeg for automated media extraction and preprocessing.\",\"Developed a pluggable TranscriptionService routing layer, enabling dynamic, seamless switching between Google Gemini and Groq/Whisper inference engines.\",\"Engineered a secure, persistent local-server file storage architecture to manage large media payloads and bypass external cloud dependency.\",\"Designed a multi-tier asynchronous job execution system utilizing Redis and ARQ, complete with a custom SQLite fallback mode.\",\"Implemented a state-reconciliation mechanism during application startup to automatically detect, recover, and reset processing tasks stalled due to server crashes.\",\"Integrated Sentry for distributed tracing and Prometheus for real-time metric instrumentation, hardening the API with slowapi rate-limiting.\"]",
-      "link": null,
-      "github": "https://github.com/naveencreation",
+      "link": "https://flowly-v1.vercel.app/",
+      "github": "https://github.com/naveencreation/Flowly-V1.git",
       "is_featured": 0
     },
     {
@@ -62,8 +62,8 @@
       "description": "Engineered a high-performance web platform designed for exploring, searching, and managing curated image prompts, featuring a highly responsive gallery and a secure administrative portal.",
       "technologies": "Next.js,TypeScript,PostgreSQL,Supabase,Tailwind CSS,Vitest,Vercel",
       "highlights": "[\"Architected backend logic using strict Repository and Service patterns, decoupling data access from business rules for maximum testability.\",\"Implemented the Factory design pattern across Storage, Caching, Rate Limiting, and Search modules to allow seamless swapping of infrastructure providers.\",\"Utilized the Next.js App Router to build dynamic public routes and a RESTful API with dedicated routes for cache revalidation and pre-signed upload URLs.\",\"Developed custom rate-limiting middleware and a centralized observability layer for real-time error tracking and telemetry.\",\"Built a memory-caching layer combined with a scheduled Cron job to batch and flush high-volume interactions (like counts) to the PostgreSQL database asynchronously.\",\"Engineered an automated trending algorithm that calculates and refreshes trending items via a background Cron service.\"]",
-      "link": null,
-      "github": "https://github.com/naveencreation",
+      "link": "https://just-prompt-ten.vercel.app/",
+      "github": "https://github.com/naveencreation/JustPrompt.git",
       "is_featured": 0
     },
     {
@@ -95,8 +95,8 @@
       "description": "Developed a lightweight, static web application centered around rendering and interacting with visual label assets, leveraging modern utility-first CSS build pipelines.",
       "technologies": "HTML5,Vanilla JavaScript,CSS3,Tailwind CSS,PostCSS,Node.js",
       "highlights": "[\"Engineered client-side logic using vanilla JavaScript and standard HTML to manipulate the DOM, ensuring a minimal footprint and fast execution.\",\"Configured and integrated Tailwind CSS into the build process via PostCSS to generate optimized, utility-driven styles.\",\"Managed dynamic and playful vector graphics (SVGs), ensuring resolution-independent rendering across various device sizes.\",\"Maintained a Node-based development environment utilizing tools like chokidar, sucrase, and fast-glob to streamline the static build workflow.\"]",
-      "link": null,
-      "github": "https://github.com/naveencreation",
+      "link": "https://magic-label.netlify.app/",
+      "github": "https://github.com/naveencreation/MagicLable.git",
       "is_featured": 0
     },
     {
